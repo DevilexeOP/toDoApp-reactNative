@@ -15,7 +15,7 @@ import { useFonts } from "expo-font";
 import bg from "../assets/bg.png";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Welcome from "./Welcome";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -83,10 +83,8 @@ const Home = ({ navigation }) => {
           </View>
         </View>
         {/* Write a Task Section */}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.writeTaskWrapper}
-        >
+
+        <View style={styles.wrappItems}>
           <TextInput
             style={styles.input}
             placeholder={"Write a task"}
@@ -98,7 +96,7 @@ const Home = ({ navigation }) => {
               <Text style={styles.addText}>+</Text>
             </View>
           </TouchableOpacity>
-        </KeyboardAvoidingView>
+        </View>
       </ImageBackground>
       <StatusBar style="light-content" />
     </View>
@@ -142,9 +140,9 @@ const styles = StyleSheet.create({
   items: {
     marginTop: 20,
   },
-  writeTaskWrapper: {
+  wrappItems: {
     position: "absolute",
-    bottom: 50,
+    bottom: 60,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-around",

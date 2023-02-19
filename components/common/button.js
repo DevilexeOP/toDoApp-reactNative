@@ -6,8 +6,8 @@ module.exports = {
     padding: 15,
     borderRadius: 5,
     fontsize: 25,
-    minwidth: 150,
+    minWidth: 150,
     textAlign: "center",
-    margin: 15,
+    margin: 10,
   },
 };

@@ -4,11 +4,9 @@ import bg from "../assets/bg.png";
 import { button1 } from "./common/button";
 import { useFonts } from "expo-font";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LoginScreen from "./Login";
 
-const Stack = createNativeStackNavigator();
-
-const Welcome = (navigation) => {
+const Welcome = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
     MontserratRegular: require("../assets/fonts/Montserrat-Regular.ttf"),
     MontserratSemiBold: require("../assets/fonts/Montserrat-SemiBold.ttf"),
@@ -17,15 +15,12 @@ const Welcome = (navigation) => {
     return null;
   }
   return (
-    <View styles={styles.container}>
-      <View style={styles.icon}>
-        <FontAwesome5
-          onPress={() => navigation.navigate("Home")}
-          name={"arrow-left"}
-          solid
-          color={"#000000"}
-          size={30}
-        />
+    <View style={{ flex: 1, backgroundColor: "#e6e1e1" }}>
+      <View style={styles.container}>
+        <Text style={styles.head}>Login To Sync</Text>
+        <Text style={button1} onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.buttonText}>Login</Text>
+        </Text>
       </View>
     </View>
   );
@@ -34,11 +29,16 @@ const Welcome = (navigation) => {
 export default Welcome;
 
 const styles = StyleSheet.create({
-  icon: {
-    alignSelf: "flex-start",
-    marginTop: 25,
-    marginRight: 35,
-    padding: 20,
-    position: "absolute",
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  head: {
+    marginTop: -150,
+    marginBottom: 10,
+    fontFamily: "MontserratSemiBold",
+    fontSize: 20,
+    color: "#000e30",
   },
 });
