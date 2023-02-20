@@ -7,19 +7,37 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useFonts } from "expo-font";
+import { Formik } from "formik";
+import * as yup from "yup";
+
+const initialValues = {
+  email: "",
+  password: "",
+};
+
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .email("Invalid Email Address")
+    .required("Email ID missing "),
+  password: yup
+    .string()
+    .trim()
+    .min(8, "Password must be at least 8 characters"),
+});
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const onChangePassword = (password) => {
-    setPassword(password);
-  };
-  const onChangeEmail = (email) => {
-    setEmail(email);
-  };
-  const onPressProceed = () => {
-    if (email && password) navigation.navigate("OTP");
-  };
+  // const onChangePassword = (password) => {
+  //   setPassword(password);
+  // };
+  // const onChangeEmail = (email) => {
+  //   setEmail(email);
+  // };
+  // const onPresslogin = () => {
+  //   if (email && password) navigation.navigate("OTP");
+  // };
   const [fontsLoaded] = useFonts({
     MontserratRegular: require("../assets/fonts/Montserrat-Regular.ttf"),
     MontserratSemiBold: require("../assets/fonts/Montserrat-SemiBold.ttf"),
@@ -27,55 +45,89 @@ const LoginScreen = ({ navigation }) => {
   if (!fontsLoaded) {
     return null;
   }
+  const handleLogin = (values, formikAction) => {
+    setTimeout(() => {
+      console.log(values, formikAction);
+    }, 3000);
+  };
   return (
-    <View style={{ flex: 1, backgroundColor: "#f0f0f0" }}>
-      <View style={styles.container}>
-        <Text style={styles.head}>Enter Email To Login</Text>
-        <View style={styles.inputContainer} elevation={2}>
-          {/* For Email ID */}
-          {/* <Text style={styles.emailLabelText}>Enter Email</Text> */}
-          <View style={styles.emailInputStyle}>
-            <TextInput
-              placeholder="Enter Email"
-              style={styles.input}
-              autoCapitalize="none"
-              value={email}
-              onChangeText={onChangeEmail}
-              secureTextEntry={false}
-            />
-          </View>
-          {/* For Password */}
-          {/* <Text style={styles.passwordLabelText}>Enter Password</Text> */}
-          <View style={styles.passwordInputStyle}>
-            <TextInput
-              placeholder="Enter Password"
-              style={styles.input}
-              autoCapitalize="none"
-              value={password}
-              onChangeText={onChangePassword}
-              secureTextEntry={true}
-            />
-          </View>
-          <View style={styles.bottom}>
-            <TouchableOpacity onPress={onPressProceed}>
-              <View style={styles.proceedBtn}>
-                <Text style={styles.proceed}>Proceed</Text>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleLogin}
+    >
+      {({
+        errors,
+        values,
+        touched,
+        handleSubmit,
+        handleChange,
+        handleBlur,
+        isSubmitting,
+      }) => {
+        console.log(errors, values);
+        return (
+          <>
+            <View style={{ flex: 1, backgroundColor: "#f0f0f0" }}>
+              <View style={styles.container}>
+                <Text style={styles.head}>Enter Email To Login</Text>
+                <View style={styles.inputContainer} elevation={2}>
+                  {/* For Email ID */}
+                  {/* <Text style={styles.emailLabelText}>Enter Email</Text> */}
+                  <Text style={styles.errorMsgEmail}>
+                    {touched.email && errors.email ? errors.email : ""}
+                  </Text>
+                  <View style={styles.emailInputStyle}>
+                    <TextInput
+                      onBlur={handleBlur("email")}
+                      placeholder="Enter Email"
+                      style={styles.input}
+                      autoCapitalize="none"
+                      value={email}
+                      onChangeText={handleChange("email")}
+                      secureTextEntry={false}
+                    />
+                  </View>
+                  {/* For Password */}
+                  {/* <Text style={styles.passwordLabelText}>Enter Password</Text> */}
+                  <Text style={styles.errorMsgPassword}>
+                    {touched.password && errors.password ? errors.password : ""}
+                  </Text>
+                  <View style={styles.passwordInputStyle}>
+                    <TextInput
+                      onBlur={handleBlur("password")}
+                      onChangeText={handleChange("password")}
+                      placeholder="Enter Password"
+                      style={styles.input}
+                      autoCapitalize="none"
+                      value={password}
+                      secureTextEntry={true}
+                    />
+                  </View>
+                  <View style={styles.bottom}>
+                    <TouchableOpacity onPress={handleSubmit}>
+                      <View style={styles.loginBtn}>
+                        <Text style={styles.login}>Login</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <View style={styles.newUserContainer}>
+                      <Text
+                        style={styles.newUser}
+                        onPress={() => {
+                          navigation.navigate("Signup");
+                        }}
+                      >
+                        New User Register Now !
+                      </Text>
+                    </View>
+                  </View>
+                </View>
               </View>
-            </TouchableOpacity>
-            <View style={styles.newUserContainer}>
-              <Text
-                style={styles.newUser}
-                onPress={() => {
-                  navigation.navigate("Signup");
-                }}
-              >
-                New User Register Now !
-              </Text>
             </View>
-          </View>
-        </View>
-      </View>
-    </View>
+          </>
+        );
+      }}
+    </Formik>
   );
 };
 
@@ -107,7 +159,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#dbd9d9",
     borderRadius: 5,
-    minWidth: 250,
+    minWidth: 300,
     minHeight: 40,
     margin: 15,
   },
@@ -121,7 +173,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#dbd9d9",
     borderRadius: 5,
-    minWidth: 250,
+    minWidth: 300,
     minHeight: 40,
     margin: 15,
   },
@@ -133,8 +185,8 @@ const styles = StyleSheet.create({
   input: {
     padding: 10,
   },
-  proceedBtn: {
-    marginTop: 30,
+  loginBtn: {
+    marginTop: 15,
     minWidth: 200,
     borderRadius: 15,
     justifyContent: "center",
@@ -142,7 +194,7 @@ const styles = StyleSheet.create({
     minHeight: 50,
     backgroundColor: "#001540",
   },
-  proceed: {
+  login: {
     color: "#ffffff",
     alignItems: "center",
     fontSize: 14,
@@ -158,5 +210,17 @@ const styles = StyleSheet.create({
     margin: 10,
     fontSize: 13,
     fontFamily: "MontserratSemiBold",
+  },
+  errorMsgEmail: {
+    fontSize: 12,
+    color: "red",
+    margin: 0,
+    right: 85,
+  },
+  errorMsgPassword: {
+    fontSize: 12,
+    color: "red",
+    margin: 0,
+    right: 38,
   },
 });
