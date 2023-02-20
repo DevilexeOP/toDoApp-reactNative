@@ -1,24 +1,31 @@
 import {
   StyleSheet,
   Text,
-  TextInput,
   View,
+  TextInput,
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import { useFonts } from "expo-font";
 
-const LoginScreen = ({ navigation }) => {
+const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState({});
+  const [confirmPassword, setConfirmPassword] = useState();
+
   const onChangePassword = (password) => {
     setPassword(password);
   };
+
+  const onChangeConfirmPassword = (confirmPassword) => {
+    setConfirmPassword(confirmPassword);
+  };
+
   const onChangeEmail = (email) => {
     setEmail(email);
   };
-  const onPressProceed = () => {
-    if (email && password) navigation.navigate("OTP");
+  const onPressRegister = () => {
+    if (email && password == confirmPassword) navigation.navigate("OTP");
   };
   const [fontsLoaded] = useFonts({
     MontserratRegular: require("../assets/fonts/Montserrat-Regular.ttf"),
@@ -30,13 +37,13 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "#f0f0f0" }}>
       <View style={styles.container}>
-        <Text style={styles.head}>Enter Email To Login</Text>
+        <Text style={styles.head}>Enter Email To Signup</Text>
         <View style={styles.inputContainer} elevation={2}>
           {/* For Email ID */}
           {/* <Text style={styles.emailLabelText}>Enter Email</Text> */}
           <View style={styles.emailInputStyle}>
             <TextInput
-              placeholder="Enter Email"
+              placeholder="Enter Email Id"
               style={styles.input}
               autoCapitalize="none"
               value={email}
@@ -56,30 +63,42 @@ const LoginScreen = ({ navigation }) => {
               secureTextEntry={true}
             />
           </View>
-          <View style={styles.bottom}>
-            <TouchableOpacity onPress={onPressProceed}>
-              <View style={styles.proceedBtn}>
-                <Text style={styles.proceed}>Proceed</Text>
-              </View>
-            </TouchableOpacity>
-            <View style={styles.newUserContainer}>
-              <Text
-                style={styles.newUser}
-                onPress={() => {
-                  navigation.navigate("Signup");
-                }}
-              >
-                New User Register Now !
-              </Text>
-            </View>
+          {/* For Confirm Password */}
+          {/* <Text style={styles.confirmPasswordLabelText}>Confirm Password</Text> */}
+          <View style={styles.confirmPasswordInputStyle}>
+            <TextInput
+              placeholder="Confirm Password"
+              style={styles.input}
+              autoCapitalize="none"
+              value={confirmPassword}
+              onChangeText={onChangeConfirmPassword}
+              secureTextEntry={true}
+            />
           </View>
+        </View>
+        <View style={styles.bottom}>
+          <TouchableOpacity onPress={onPressRegister}>
+            <View style={styles.registerBtn}>
+              <Text style={styles.register}>Register</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.oldUserContainer}>
+          <Text
+            style={styles.oldUser}
+            onPress={() => {
+              navigation.navigate("Login");
+            }}
+          >
+            Already Have Account LOGIN !
+          </Text>
         </View>
       </View>
     </View>
   );
 };
 
-export default LoginScreen;
+export default SignupScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -100,16 +119,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     width: 350,
-    height: 360,
+    height: 350,
     borderRadius: 15,
   },
   emailInputStyle: {
     borderWidth: 1,
     borderColor: "#dbd9d9",
     borderRadius: 5,
-    minWidth: 250,
+    minWidth: 300,
     minHeight: 40,
-    margin: 15,
+    margin: 20,
   },
   emailLabelText: {
     fontFamily: "MontserratRegular",
@@ -121,11 +140,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#dbd9d9",
     borderRadius: 5,
-    minWidth: 250,
+    minWidth: 300,
     minHeight: 40,
-    margin: 15,
+    margin: 20,
   },
   passwordLabelText: {
+    fontFamily: "MontserratRegular",
+    fontSize: 15,
+    color: "#001540",
+  },
+  confirmPasswordInputStyle: {
+    borderWidth: 1,
+    borderColor: "#dbd9d9",
+    borderRadius: 5,
+    minWidth: 300,
+    minHeight: 40,
+    margin: 20,
+  },
+  confirmPasswordLabelText: {
     fontFamily: "MontserratRegular",
     fontSize: 15,
     color: "#001540",
@@ -133,7 +165,7 @@ const styles = StyleSheet.create({
   input: {
     padding: 10,
   },
-  proceedBtn: {
+  registerBtn: {
     marginTop: 30,
     minWidth: 200,
     borderRadius: 15,
@@ -142,18 +174,18 @@ const styles = StyleSheet.create({
     minHeight: 50,
     backgroundColor: "#001540",
   },
-  proceed: {
+  register: {
     color: "#ffffff",
     alignItems: "center",
     fontSize: 14,
     fontFamily: "MontserratSemiBold",
   },
-  newUserContainer: {
+  oldUserContainer: {
     alignItems: "center",
     marginTop: 10,
     justifyContent: "space-evenly",
   },
-  newUser: {
+  oldUser: {
     color: "#001e38",
     margin: 10,
     fontSize: 13,

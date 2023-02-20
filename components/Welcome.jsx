@@ -1,10 +1,7 @@
 import { StyleSheet, Text, View, ImageBackground } from "react-native";
 import React from "react";
-import bg from "../assets/bg.png";
 import { button1 } from "./common/button";
 import { useFonts } from "expo-font";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import LoginScreen from "./Login";
 
 const Welcome = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -17,10 +14,15 @@ const Welcome = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "#e6e1e1" }}>
       <View style={styles.container}>
-        <Text style={styles.head}>Login To Sync</Text>
-        <Text style={button1} onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.buttonText}>Login</Text>
-        </Text>
+        <Text style={styles.head}>Login/Signup To Sync</Text>
+        <View style={styles.inputContainer} elevation={1}>
+          <Text style={button1} onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.buttonText}>Login</Text>
+          </Text>
+          <Text style={button1} onPress={() => navigation.navigate("Signup")}>
+            <Text style={styles.buttonText}>Signup</Text>
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -34,8 +36,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  inputContainer: {
+    backgroundColor: "#fff0f2",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+    width: 350,
+    height: 250,
+    borderRadius: 5,
+  },
   head: {
-    marginTop: -150,
+    marginTop: -50,
     marginBottom: 10,
     fontFamily: "MontserratSemiBold",
     fontSize: 20,

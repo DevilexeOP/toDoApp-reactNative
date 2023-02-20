@@ -7,6 +7,7 @@ import WelcomeScreen from "./components/Welcome";
 import HomeScreen from "./components/Home";
 import LoginScreen from "./components/Login";
 import OTPscreen from "./components/OTP";
+import SignupScreen from "./components/Signup";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,15 @@ export default function App({ navigation }) {
           component={LoginScreen}
           options={{
             title: "Login !",
+            headerTransparent: true,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="Signup"
+          component={SignupScreen}
+          options={{
+            title: "Signup !",
             headerTransparent: true,
             headerTitleAlign: "center",
           }}
