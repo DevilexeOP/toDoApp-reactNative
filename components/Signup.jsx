@@ -10,6 +10,7 @@ import { useFonts } from "expo-font";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigation } from "@react-navigation/native";
+import AppInput from "./common/AppInput";
 
 const initialValues = {
   email: "",
@@ -38,19 +39,6 @@ const SignupScreen = ({ navigation }) => {
   const [password, setPassword] = useState({});
   const [confirmPassword, setConfirmPassword] = useState();
 
-  // const onChangePassword = (password) => {
-  //   setPassword(password);
-  // };
-  // const onChangeConfirmPassword = (confirmPassword) => {
-  //   setConfirmPassword(confirmPassword);
-  // };
-  // const onChangeEmail = (email) => {
-  //   setEmail(email);
-  // };
-  // const onPressRegister = () => {
-  //   if (email && password == confirmPassword) navigation.navigate("OTP");
-  // };
-
   const [fontsLoaded] = useFonts({
     MontserratRegular: require("../assets/fonts/Montserrat-Regular.ttf"),
     MontserratSemiBold: require("../assets/fonts/Montserrat-SemiBold.ttf"),
@@ -73,16 +61,8 @@ const SignupScreen = ({ navigation }) => {
       validationSchema={validationSchema}
       onSubmit={handleSignup}
     >
-      {({
-        errors,
-        values,
-        touched,
-        handleSubmit,
-        handleChange,
-        handleBlur,
-        isSubmitting,
-      }) => {
-        console.log(errors, values);
+      {({ handleSubmit }) => {
+        // console.log(errors, values);
         return (
           <>
             <View style={{ flex: 1, backgroundColor: "#f0f0f0" }}>
@@ -90,65 +70,40 @@ const SignupScreen = ({ navigation }) => {
                 <Text style={styles.head}>Enter Email To Signup</Text>
                 <View style={styles.inputContainer} elevation={2}>
                   {/* For Email ID */}
-                  {/* <Text style={styles.emailLabelText}>Enter Email</Text> */}
-                  <Text style={styles.errorMsgEmail}>
-                    {touched.email && errors.email ? errors.email : ""}
-                  </Text>
-                  <View style={styles.emailInputStyle}>
-                    <TextInput
-                      onBlur={handleBlur("email")}
-                      placeholder="Enter Email Id"
-                      style={styles.input}
-                      autoCapitalize="none"
-                      value={email}
-                      onChangeText={handleChange("email")}
-                      secureTextEntry={false}
-                    />
-                  </View>
+                  <AppInput
+                    name="email"
+                    placeholder="Enter Email Id"
+                    style={[styles.emailInputStyle, { padding: 10 }]}
+                    autoCapitalize="none"
+                    value={email}
+                  />
                   {/* For Password */}
-                  {/* <Text style={styles.passwordLabelText}>Enter Password</Text> */}
-                  <Text style={styles.errorMsgPassword}>
-                    {touched.password && errors.password ? errors.password : ""}
-                  </Text>
-                  <View style={styles.passwordInputStyle}>
-                    <TextInput
-                      onBlur={handleBlur("password")}
-                      placeholder="Enter Password"
-                      style={styles.input}
-                      autoCapitalize="none"
-                      value={password}
-                      onChangeText={handleChange("password")}
-                      secureTextEntry={true}
-                    />
-                  </View>
+                  <AppInput
+                    name="password"
+                    placeholder="Enter Password"
+                    style={[styles.passwordInputStyle, { padding: 10 }]}
+                    autoCapitalize="none"
+                    value={password}
+                    secureTextEntry={true}
+                  />
                   {/* For Confirm Password */}
-                  {/* <Text style={styles.confirmPasswordLabelText}>Confirm Password</Text> */}
-                  <Text style={styles.errorMsgConfirmPass}>
-                    {touched.confirmPassword && errors.confirmPassword
-                      ? errors.confirmPassword
-                      : ""}
-                  </Text>
-                  <View style={styles.confirmPasswordInputStyle}>
-                    <TextInput
-                      onBlur={handleBlur("confirmPassword")}
-                      placeholder="Confirm Password"
-                      style={styles.input}
-                      autoCapitalize="none"
-                      value={confirmPassword}
-                      onChangeText={handleChange("confirmPassword")}
-                      secureTextEntry={true}
-                    />
-                  </View>
+
+                  <AppInput
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    style={[styles.confirmPasswordInputStyle, { padding: 10 }]}
+                    autoCapitalize="none"
+                    value={confirmPassword}
+                    secureTextEntry={true}
+                  />
                   {/* Register Button & Stuff  */}
                 </View>
                 <View style={styles.bottom}>
-                  <TouchableOpacity
-                    onPress={isSubmitting ? null : handleSubmit}
-                  >
+                  <TouchableOpacity onPress={handleSubmit}>
                     <View
                       style={[
                         styles.registerBtn,
-                        { backgroundColor: isSubmitting ? "gray" : "#001540" },
+                        // { backgroundColor: isSubmitting ? "gray" : "#001540" },
                       ]}
                     >
                       <Text style={styles.register}>Register</Text>
@@ -204,41 +159,25 @@ const styles = StyleSheet.create({
     borderColor: "#dbd9d9",
     borderRadius: 5,
     minWidth: 300,
-    minHeight: 40,
+    minHeight: 50,
     margin: 15,
   },
-  // emailLabelText: {
-  //   fontFamily: "MontserratRegular",
-  //   fontSize: 15,
-  //   color: "#001540",
-  //   marginTop: -20,
-  // },
   passwordInputStyle: {
     borderWidth: 1,
     borderColor: "#dbd9d9",
     borderRadius: 5,
     minWidth: 300,
-    minHeight: 40,
+    minHeight: 50,
     margin: 15,
   },
-  // passwordLabelText: {
-  //   fontFamily: "MontserratRegular",
-  //   fontSize: 15,
-  //   color: "#001540",
-  // },
   confirmPasswordInputStyle: {
     borderWidth: 1,
     borderColor: "#dbd9d9",
     borderRadius: 5,
     minWidth: 300,
-    minHeight: 40,
+    minHeight: 50,
     margin: 15,
   },
-  // confirmPasswordLabelText: {
-  //   fontFamily: "MontserratRegular",
-  //   fontSize: 15,
-  //   color: "#001540",
-  // },
   input: {
     padding: 10,
   },
